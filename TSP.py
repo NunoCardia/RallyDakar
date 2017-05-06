@@ -16,7 +16,7 @@ class TSP():
         return adjacency_matrix
 
 
-    def solve_tsp(self,matrix):
+    def solve_tsp(self,matrix):#TODO travelling salesman problem: nearest neighbour algorithm
         pass
 
 
