@@ -2,6 +2,7 @@ import string
 import copy
 import random
 import re
+import sys
 
 class RallyNode():
     def __init__(self,symbol,connections,check=0):
@@ -27,34 +28,33 @@ class Tarefa1():
 
     def find_duplicates(self,cities,element,key):
         for i in range(len(cities)):
- #mandar para aqui o rally_list e procurar pela ligação aqui
             if str(key) == cities[i].symbol or str(element) == cities[i].symbol:
-                if cities[i].search_in_dict(element) == "Nao existe":
+                answer =cities[i].search_in_dict(element)
+                if  answer == "Nao existe":
                     return 0
                 else:
-                    return 1
+                    return answer
         return 0
 
 
     def geradorMapas(self,n_cidades):
-        #gerar todos os simbolos necessarios
-        #symbols = list(string.ascii_letters)
-        symbols = self.read_symbols()
-        #max_dist = eval(input("Distância máxima entre cidades: "))
-        #random.shuffle(symbols)
+        #symbols = self.read_symbols()
+        symbols = string.ascii_letters
         cities = symbols[:n_cidades]
         edges = (n_cidades*(n_cidades - 1))/2
         rally_list = []
         temp_dict = {}
-
         for i in range(n_cidades):
             for j in range(n_cidades):
                 if not rally_list:
                     temp_dict = self.add_empty(n_cidades,cities,cities[i])
                     break
                 if cities[i] != cities[j]:
-                        if self.find_duplicates(rally_list,cities[i],cities[j]) == 0:
-                                temp_dict[cities[j]] = random.randint(0,1000)
+                    answer = self.find_duplicates(rally_list,cities[i],cities[j])
+                    if answer == 0:
+                            temp_dict[cities[j]] = random.randint(0,1000)
+                    else:
+                        temp_dict[cities[j]] = answer
 
             new = RallyNode(cities[i],copy.deepcopy(temp_dict),1)
             rally_list.append(new)
@@ -71,17 +71,24 @@ class Tarefa1():
 
     def print_map(self,dakar_map):
         print("Starts in " + str(dakar_map[0].symbol)+"\n")
+        visited = []
         for i in range(len(dakar_map)):
             for key,value in dakar_map[i].connections.items():
-                print(dakar_map[i].symbol + " ----> " + key + "\t" + str(value))
+                if key not in visited:
+                    print(dakar_map[i].symbol + " ----> " + key + "\t" + str(value))
+            visited.append(dakar_map[i].symbol)
 
     def read_symbols(self):
         symbol_list = []
-        with open('/Users/cyberfox21/Documents/UC/AED/2017/RallyGenerator/symbols.txt') as f:
+        with open('symbols.txt') as f:
             for line in f:
                 line = line.strip()
                 symbol_list.append(line)
         return symbol_list
+
+
+
+
 
 
 def main():
@@ -90,8 +97,15 @@ def main():
     #final = new.search_in_dict(dict,"B")
     #print("Found: " + str(final))
     Tarefa1().read_symbols()
-    new = Tarefa1().geradorMapas(7)
+    new = Tarefa1().geradorMapas(4)
     Tarefa1().print_map(new)
+    #Tarefa1().dij()
+    distances = {
+        'B': {'A': 20, 'D': 34, 'C': 30},
+        'A': {'B': 20, 'D': 35, 'C': 42},
+        'D': {'A': 35, 'B': 34, 'C': 12},
+        'C': {'A': 42, 'B': 30, 'D': 12}}
+
 
 
 if __name__ == "__main__":
