@@ -1,8 +1,6 @@
 import string
 import copy
 import random
-import re
-import sys
 
 class RallyNode():
     def __init__(self,symbol,connections,check=0):
@@ -11,7 +9,7 @@ class RallyNode():
 
 
     def search_in_dict(self,key):
-        return self.connections.get(key,"Nao existe") #procura no dicionario se a key existe e retorna o elemento, caso n tenha retorna o segundo parametro
+        return self.connections.get(key,-1) #procura no dicionario se a key existe e retorna o elemento, caso n tenha retorna o segundo parametro
 
     def print_node(self):
         return "Symbol: " + str(self.symbol) + "\n" + "Connections: "+ str(self.connections)
@@ -30,7 +28,7 @@ class Tarefa1():
         for i in range(len(cities)):
             if str(key) == cities[i].symbol or str(element) == cities[i].symbol:
                 answer =cities[i].search_in_dict(element)
-                if  answer == "Nao existe":
+                if  answer == -1:
                     return 0
                 else:
                     return answer
@@ -38,10 +36,9 @@ class Tarefa1():
 
 
     def geradorMapas(self,n_cidades):
-        #symbols = self.read_symbols()
-        symbols = string.ascii_letters
+        symbols = self.read_symbols()
+        #symbols = string.ascii_letters
         cities = symbols[:n_cidades]
-        edges = (n_cidades*(n_cidades - 1))/2
         rally_list = []
         temp_dict = {}
         for i in range(n_cidades):
@@ -56,16 +53,9 @@ class Tarefa1():
                     else:
                         temp_dict[cities[j]] = answer
 
-            new = RallyNode(cities[i],copy.deepcopy(temp_dict),1)
+            new = RallyNode(cities[i],copy.deepcopy(temp_dict))
             rally_list.append(new)
             temp_dict.clear()
-
-        sum = 0
-        for elem in rally_list:
-            sum += len(elem.connections)
-
-        if sum == edges:
-            print("This is a complete graph by definition")
 
         return rally_list
 
@@ -98,7 +88,7 @@ def main():
     #print("Found: " + str(final))
     Tarefa1().read_symbols()
     new = Tarefa1().geradorMapas(4)
-    Tarefa1().print_map(new)
+    #Tarefa1().print_map(new)
     #Tarefa1().dij()
     distances = {
         'B': {'A': 20, 'D': 34, 'C': 30},
