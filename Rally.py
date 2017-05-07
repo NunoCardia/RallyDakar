@@ -16,44 +16,24 @@ class RallyNode():
 
 class Tarefa1():
 
-    def add_empty(self,n_cidades,cities,city):
-        temp_dict = {}
-        for i in range(n_cidades):
-            if city != cities[i]:
-                temp_dict[cities[i]] = random.randint(0,1000)
-
-        return temp_dict
-
-    def find_duplicates(self,cities,element,key):
-        for i in range(len(cities)):
-            if str(key) == cities[i].symbol or str(element) == cities[i].symbol:
-                answer =cities[i].search_in_dict(element)
-                if  answer == -1:
-                    return 0
-                else:
-                    return answer
-        return 0
-
+    def reptead(self,index1,sym,map):
+        return map[index1].connections.get(sym,-1)
 
     def geradorMapas(self,n_cidades):
-        symbols = self.read_symbols()
-        #symbols = string.ascii_letters
+        #symbols = self.read_symbols()
+        symbols = list(string.ascii_letters)
         cities = symbols[:n_cidades]
         rally_list = []
         temp_dict = {}
-        for i in range(n_cidades):
-            for j in range(n_cidades):
-                if not rally_list:
-                    temp_dict = self.add_empty(n_cidades,cities,cities[i])
-                    break
-                if cities[i] != cities[j]:
-                    answer = self.find_duplicates(rally_list,cities[i],cities[j])
-                    if answer == 0:
-                            temp_dict[cities[j]] = random.randint(0,1000)
+        for k in range(len(cities)):
+            s = cities[k]
+            for i in range(len(cities)):
+                if cities[i] != s:
+                    if i < k:
+                        temp_dict[cities[i]] = self.reptead(i,s,rally_list)
                     else:
-                        temp_dict[cities[j]] = answer
-
-            new = RallyNode(cities[i],copy.deepcopy(temp_dict))
+                        temp_dict[cities[i]] = random.randint(10,1000)
+            new = RallyNode(s,copy.deepcopy(temp_dict))
             rally_list.append(new)
             temp_dict.clear()
 
@@ -88,7 +68,7 @@ def main():
     #print("Found: " + str(final))
     Tarefa1().read_symbols()
     new = Tarefa1().geradorMapas(4)
-    #Tarefa1().print_map(new)
+    Tarefa1().print_map(new)
     #Tarefa1().dij()
     distances = {
         'B': {'A': 20, 'D': 34, 'C': 30},
