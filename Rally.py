@@ -67,7 +67,7 @@ def main():
     #final = new.search_in_dict(dict,"B")
     #print("Found: " + str(final))
     Tarefa1().read_symbols()
-    new = Tarefa1().geradorMapas(4)
+    new = Tarefa1().geradorMapas(1000)
     Tarefa1().print_map(new)
     #Tarefa1().dij()
     distances = {

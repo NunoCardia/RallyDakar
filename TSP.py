@@ -4,15 +4,11 @@ class TSP():
 
     def create_adjancency_maxtrix(self,map):
         map_length = len(map)
-        adjacency_matrix = [[0 for x in range(map_length)] for y in range(map_length)]
+        adjacency_matrix = [y for y in range(map_length)]
         for i in range(map_length):
             val = [value for value in map[i].connections.values()]
             val.insert(i,0)
-            for j in range(map_length):
-                if j == i:
-                    adjacency_matrix[i][j] = 0
-                else:
-                    adjacency_matrix[i][j] =  val[j]
+            adjacency_matrix[i] = val
 
         return adjacency_matrix
 
@@ -48,7 +44,7 @@ class TSP():
 def main():
     t = TSP()
     Rally.Tarefa1().read_symbols()
-    a = Rally.Tarefa1().geradorMapas(10)
+    a = Rally.Tarefa1().geradorMapas(4)
     m = t.create_adjancency_maxtrix(a)
     # con1 = {'b':20,'c':42,'d':35}
     # s1 = 'a'
