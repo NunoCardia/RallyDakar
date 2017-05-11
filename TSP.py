@@ -1,4 +1,5 @@
 import Rally
+from time import process_time
 
 class TSP():
 
@@ -13,28 +14,25 @@ class TSP():
         return adjacency_matrix
 
 
-    def solve_tsp(self,matrix,map):#TODO travelling salesman problem: nearest neighbour algorithm -- DONE
-        visited = []
+    def solve_tsp(self,matrix,map):
         path = []
-        temp = []
         cost = 0
         path.append(map[0].symbol)
-        next_index = 0
+        current = []
+        j=0
         for i in range(len(matrix)-1):
-            for j in matrix[next_index]:
-                if j > 0 and matrix[next_index].index(j) not in visited:
-                    temp.append(int(j))
-            min_lane = min(temp)
+            try:
+                min_lane = min(k for k in matrix[j] if k > 0 and matrix[j].index(k) not in current)
+            except ValueError:
+                break
             cost += int(min_lane)
-            for key,value in map[next_index].connections.items():
-                if value == min_lane:
-                    path.append(key)
-                    break
-            visited.append(next_index)
-            next_index = matrix[next_index].index(min_lane)
-            temp.clear()
-        path.append(map[0].symbol)
-        cost+=map[next_index].search_in_dict(path[0])
+            current.append(j)
+            index = matrix[j].index(min_lane)
+            path.append(map[index].symbol)
+            j = index
+        path.append(path[0])
+        cost+=map[j].search_in_dict(path[0])
+
 
         for elem in path:
             print(elem,end=' ')
@@ -43,28 +41,32 @@ class TSP():
 
 def main():
     t = TSP()
-    Rally.Tarefa1().read_symbols()
-    a = Rally.Tarefa1().geradorMapas(4)
-    m = t.create_adjancency_maxtrix(a)
-    # con1 = {'b':20,'c':42,'d':35}
-    # s1 = 'a'
-    # con2 = {'a':20,'c':30,'d':34}
-    # s2 = 'b'
-    # con3 = {'a':42,'b':30,'d':12}
-    # s3 = 'c'
-    # con4 = {'a':35,'b':34,'c':12}
-    # s4 = 'd'
-    # rally_map = []
-    # new1 = Rally.RallyNode(s1,con1)
-    # new2 = Rally.RallyNode(s2, con2)
-    # new3 = Rally.RallyNode(s3, con3)
-    # new4 = Rally.RallyNode(s4, con4)
-    # rally_map.append(new1)
-    # rally_map.append(new2)
-    # rally_map.append(new3)
-    # rally_map.append(new4)
-    # m = [[0,20,42,35],[20,0,30,34],[42,30,0,12],[35,34,12,0]]
-    t.solve_tsp(m,a)
+    s = Rally.Tarefa1().read_symbols()
+    print(len(s))
+    inicio = process_time()
+    #a = Rally.Tarefa1().geradorMapas(7,s)
+    #m = t.create_adjancency_maxtrix(a)
+    con1 = {'b':229,'l':683,'t':769}
+    s1 = 'e'
+    con2 = {'e':156,'l':954,'t':155}
+    s2 = 'b'
+    con3 = {'e':439,'b':473,'t':822}
+    s3 = 'l'
+    con4 = {'e':668,'b':242,'l':378}
+    s4 = 't'
+    rally_map = []
+    new1 = Rally.RallyNode(s1,con1)
+    new2 = Rally.RallyNode(s2, con2)
+    new3 = Rally.RallyNode(s3, con3)
+    new4 = Rally.RallyNode(s4, con4)
+    rally_map.append(new1)
+    rally_map.append(new2)
+    rally_map.append(new3)
+    rally_map.append(new4)
+    m = [[0,229,683,769],[156,0,954,155],[439,473,0,822],[668,242,378,0]]
+    t.solve_tsp(m,rally_map)
+    fim = process_time()
+    print("Operação concluida em " + str(fim - inicio) + " segundos")
 
 
 
