@@ -1,4 +1,5 @@
 import Rally
+import Tarefa2
 from time import process_time
 
 class TSP():
@@ -41,30 +42,17 @@ class TSP():
 
 def main():
     t = TSP()
-    s = Rally.Tarefa1().read_symbols()
-    print(len(s))
+    # s = Rally.Tarefa1().read_symbols()
+    # print(len(s))
     inicio = process_time()
-    #a = Rally.Tarefa1().geradorMapas(7,s)
+    # a = Rally.Tarefa1().geradorMapas(10,s)
+    # Rally.Tarefa1().print_map(a)
     #m = t.create_adjancency_maxtrix(a)
-    con1 = {'b':229,'l':683,'t':769}
-    s1 = 'e'
-    con2 = {'e':156,'l':954,'t':155}
-    s2 = 'b'
-    con3 = {'e':439,'b':473,'t':822}
-    s3 = 'l'
-    con4 = {'e':668,'b':242,'l':378}
-    s4 = 't'
-    rally_map = []
-    new1 = Rally.RallyNode(s1,con1)
-    new2 = Rally.RallyNode(s2, con2)
-    new3 = Rally.RallyNode(s3, con3)
-    new4 = Rally.RallyNode(s4, con4)
-    rally_map.append(new1)
-    rally_map.append(new2)
-    rally_map.append(new3)
-    rally_map.append(new4)
-    m = [[0,229,683,769],[156,0,954,155],[439,473,0,822],[668,242,378,0]]
-    t.solve_tsp(m,rally_map)
+    s = Tarefa2.Tarefa2().read_symbols()
+    a = Tarefa2.Tarefa2().geradorMapas(10, s)
+    Tarefa2.Tarefa2().print_map(a)
+    m = t.create_adjancency_maxtrix(a)
+    t.solve_tsp(m,a)
     fim = process_time()
     print("Operação concluida em " + str(fim - inicio) + " segundos")
 
