@@ -34,7 +34,7 @@ class Tarefa1():
                     if i < k:
                         temp_dict[cities[i]] = self.reptead(i,s,rally_list)
                     else:
-                        temp_dict[cities[i]] = random.randint(10,1000)
+                        temp_dict[cities[i]] = random.randint(50,1000)
             new = RallyNode(s,copy.deepcopy(temp_dict))
             rally_list.append(new)
             temp_dict.clear()

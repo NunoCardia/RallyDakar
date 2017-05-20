@@ -2,7 +2,7 @@ import string
 import copy
 import random
 import os
-import TSP
+from TSP import TSP
 
 class RallyNode():
     def __init__(self,symbol,connections,check=0):
@@ -26,7 +26,7 @@ class Tarefa2():
             s = cities[k]
             for i in range(len(cities)):
                 if cities[i] != s:
-                    temp_dict[cities[i]] = random.randint(10,1000)
+                    temp_dict[cities[i]] = random.randint(50,1000)
             new = RallyNode(s,copy.deepcopy(temp_dict))
             rally_list.append(new)
             temp_dict.clear()
@@ -55,11 +55,11 @@ class Tarefa2():
 
     def save_repeated_file(self,filename,cidades):
         i = 1
-        new_name = filename + str(cidades) + (i) + ".txt"
+        new_name = filename + str(cidades) + str(i) + ".txt"
         new_path = "./" + new_name
         while self.search_file(new_path) == True:
             i += 1
-            new_name = filename + str(cidades) + (i) + ".txt"
+            new_name = filename + str(cidades) + str(i) + ".txt"
             new_path = "./" + new_name
 
         return new_name

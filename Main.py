@@ -1,5 +1,8 @@
 import os
+from TSP import TSP
 import Rally
+from Tarefa2 import Tarefa2
+from time import process_time
 
 def main_menu():
     while True:
@@ -21,9 +24,9 @@ def menu_tarefa1():
 def menu_tarefa2():
     option1 = eval(input("1 - Gerador automático de mapas\n2 - Caminho mais curto de um mapa\n3 - Voltar\n"))
     if option1 == 1:
-        Rally.Tarefa2().main_tarefa2_2()
+        Tarefa2().main_tarefa2_2()
     elif option1 == 2:
-        Rally.Tarefa2().main_tarefa2_3()
+        Tarefa2().main_tarefa2_3()
     elif option1 == 3:
         os.system('clear')
         return 0
@@ -34,4 +37,25 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    t = TSP()
+    s = Rally.Tarefa1().read_symbols()
+
+    inicio = process_time()
+    a = Rally.Tarefa1().geradorMapas(22510, s)
+    m = t.create_adjancency_maxtrix(a)
+    t.solve_tsp(m, a)
+    fim = process_time()
+    print("Operação 25500 concluida em " + str(fim - inicio) + " segundos")
+    inicio = process_time()
+    a = Rally.Tarefa1().geradorMapas(22520, s)
+    m = t.create_adjancency_maxtrix(a)
+    t.solve_tsp(m, a)
+    fim = process_time()
+    print("Operação 25550 concluida em " + str(fim - inicio) + " segundos")
+    inicio = process_time()
+    a = Rally.Tarefa1().geradorMapas(22540, s)
+    m = t.create_adjancency_maxtrix(a)
+    t.solve_tsp(m, a)
+    fim = process_time()
+    print("Operação 25555 concluida em " + str(fim - inicio) + " segundos")
+

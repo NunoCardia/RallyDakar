@@ -1,0 +1,81 @@
+relatorio AED projeto 2
+
+1 - aspetos teoricos relevantes
+2 - estrutura de dados usada
+3 - Algoritmos usados para as tarefas
+4 - Otimizações feitas aos algoritmos
+5 - Casos de teste usados
+6 - Conclusões finais
+
+1 - aspetos teoricos relevantes
+
+	1.1 - grafos
+		Grafos são estruturas discretas compostas por vértices, ou nós e por arestas, ligando os nós. Vértice é parte fundamental do nosso grafo. Pode ter nome e informações adicionais acerca do problema a tratar. Aresta representa uma ligação entre dois nós do grafo. Peso é um atributo não obrigatorio da aresta. Serve para representar o custo de ir de um vértice para outro.
+	1.2 - grafos completos
+		De forma a minimizar o número de soluções, o grafo de caminhos que vamos utilizar é sempre um grafo completo. Este é um grafo simples em que todos os vértices são adjacentes a todos os outros vértices. Um aspeto importantíssimo para este projeto é que o número de arestas de um grafo completo é dado por (n(n-1))/2, sendo n o número de vértices do grafo. Como veremos mais á frente esta expressão será usada para calcular o número de cidades do grafo a partir de um ficheiro carregado para o programa.
+	1.3 - matriz de adjacência
+	Numa matriz de adjacência cada linha e cada coluna representa um vértice de um grafo. O valor que se encontra na interseção de uma linha com uma coluna representa o peso da ligação entre os dois nós.
+
+2 - estrutura de dados usada
+	2.1 - Grafo
+		Cada nó do grafo possui a seguinte estrutura:
+			- símbolo
+			- dicionário com as ligações
+		O símbolo representa o nome do respetivo nó. O dicionário com as ligações associadas com cada vértice tem como chave o símbolo do respetivo nó e como chave o respetivo peso.
+		Escolhi este tipo de estrutura uma vez que possui complexidades temporais e espaciais relativamente aceitáveis e porque é uma estrutura que tem já tem funcões establecidas que me permitem alterar a estrutura de forma a adicionar/remover/alterar mais rápida solucionando o problema mais rápido. Também escolhi esta estrutura uma vez que,segundo a minha pesquisa, é bastante usada na resolução de problemas relativamente a grafos.
+		Para juntar todos os nós e formar um grafo completo decidi usar uma lista simples.
+
+3 - algoritmos usados para as tarefas
+	3.1 - Símbolos usados
+		Cerca de 14200 símbolos estão disponíveis no ficheiro symbols.txt. Este ficheiro tem todas as letras e números disponíveis. Esses números são reordenados de forma a formarem strings que vão até 3 caracteres. Os símbolos foram criados e copiados através de um website.
+	3.2 - Distâncias usadas entre cidades
+		Um aspeto importante sobre este projeto era o range das distâncias entre cidades. Após falar com o professor regente decidi optar por uma abordagem realista. Como tal verifiquei durante a minha pesquisa para este projeto que durante o último Rally Dakar a distância máxima nunca passava dos 1000 km. Como tal decidi que a distância mínima fixar-se-ia os 50km e a distância máxima nos 1000km.
+	3.3 - criação do grafo
+		Para a criação do grafo o algoritmo criado carrega todos símbolos disponíveis e guarda aqueles somente necessários, de acordo com o número de cidades que o utilizador introduziu. Por exemplo, se o utilizador pediu 20 cidades a lista vai ser constituida com os primeiros 20 símbolos do ficheiro. Posteriormente é criado um dicionário temporário que permite adicionar as ligações aos nós. O algoritmo coloca o primeiro símbolo e depois adiciona n-1 ligações. O valor destas ligações é dado pela função random e é guardado como valor no dicionário. Para a tarefa 1 é feita uma verificação adicional em que vai ás ligações já criadas e procura pela ligação. Se esta já existir copia o valor. É importante mencionar que esta verificação não é feita para todos os nós. Apenas aqueles que estão atrás do nó atual são verificados. Quando todas as arestas tiverem criadas é feito um deepcopy do dicionário para a estrutura do nó conjutamente com o símbolo. Finalmente esse nó é adicionado á lista que representa o grafo. Um exemplo será apresentado a seguir.
+	3.4 - criação do caminho mais curto
+		De acordo com enunciado o caminho mais curto teria de passar por todas as cidades exatamente uma vez, exceto a cidade de origem. Este é um exemplo do clássico problema do caixeiro viajante (travelling salesman problem). Este problema permite representar o seguinte problema: "Dada uma lista de cidades e as distâncias entre elas, qual é o caminho mais curto possível que permita visitar cada cidade exatamente uma vez e retornar a cidade de origem?". Para este problema escolhi implementar um "greedy algorithm" designado de nearest neighbour algorithm. É um algoritmo bastante simples de implementar, daí o ter escolhido para este projeto. Estes são os passos do algoritmo:
+			1 - Começar na cidade origem;
+			2 - Encontrar a ligação mais curta que ligue o vértice atual e um vértice ainda não visitado V;
+			3 - O vértice atual passa a ser V;
+			4 - Marcar V como visitado;
+			5 - Se todos os vértices tiverem sido visitados adicionar o vértice de origem á lista e sair;
+			6 - Se não volta-se ao passo 2.
+		A cada iteração do algortimo vai-se adicionando o custo da ligação entre vértices ao custo total.
+		Este algoritmo lê estes valores a partir de uma matriz de adjacência que é criada no ínicio deste algoritmo. Como todos os grafos neste problema são completos o facto de existirem elementos da matriz vazios em grafos não completos não se aplica aqui.
+		O custo das ligações é representado por um inteiro, enquanto que os vértices visitados são adicionados a uma lista simples. No final esta lista é imprimida em conjunto com o custo total da viagem.
+	3.5 - criação de um grafo a partir de um ficheiro
+		O programa apresentado permite ao utilizador carregar um ficheiro e criar um grafo a partir deste. Como tal, o número de cidades é obtido a partir da expressão (n(n-1))/2 = n_ligações. Este número de ligações é dado pelo número de linhas do ficheiro. Com o número de cidades obtido o grafo é lido linha a linha de forma a obter todas as ligações deste. 
+		3.5.1 - Tarefa 1
+			Se o grafo tiver n cidades sabemos que o número de ligações do primeiro nó são dadas por n-1, do segundo n-2 e assim sucessivamente até penúltimo nó. O úlimo nó já tem todas as ligações necessárias uma vez que os valores das distâncias entre cidades são iguais.
+		3.5.2 - Tarefa 2
+			Aqui o algoritmo é mais simples uma vez que existem n*(n-1) ligações no ficheiro. Como tal o ficheiro vai lendo (n-1) vezes para cada nó.
+	3.6 - guardar um grafo num ficheiro
+		No final do algoritmo de criação do grafo é perguntado ao utilizador se pretende guardar o grafo atual num ficheiro. De acordo com enunciado o nome do ficheiro é criado da seguinte forma: tarefa_x_n.txt, onde x representa o número da tarefa e n o número de cidades. O programa permite ainda ao utilizador guardar mapas que sejam da mesma tarefa e com o mesmo número de cidades. Neste caso adiciona caracteres ao fim do nome do ficheiro. Exemplo: se já existir um ficheiro com o nome "tarefa_1_5.txt" e o utilizador queira guardar um ficheiro com as mesmas caracteristicas o programa guarda o ficheiro na mesma localização mas com o nome "tarefa_1_5(1).txt". Se este já existir o nome fica "tarefa_1_5(2).txt" e assim sucessivamente. A verificação da existência dos ficheiros é feita recorrendo ao módulo os do python.
+
+4 - Otimizações feitas aos algoritmos e estruturas de dados
+	4.1 - estruturas de dados
+		Foram feitas algumas alterações à estrutura de dados que tinha inicialmente. No ínicio do do desenvolvimento do projeto era uma estrutura baseada em lista, onde as ligações e o seu custo eram guardadas em listas e depois todos estes elementos eram guardados noutra lista. Esta resolução era bastante complexa e confusa pelo que os resultados apresentados eram bastante insatisfatórios. 
+	4.2 - algoritmos usados
+		4.2.1 - criação do grafo
+		Inicialmente, para a tarefa 1, era verificado para todos os nós se existia alguma ligação anterior o que não era necessário. Este algoritmo implicava uma pesquisa pela estrutura criada até ao momento o que era bastante dispendioso. Em conjunto com as alterações indicadas no ponto anterior foi possível obter uma melhoria significativa em termos de performance.
+		4.2.2 - criação do caminho mais curto
+		Desde o ínicio da resolução do problema apresentado que o nearest neighbour algorithm foi a solução escolhida á variante do problema do caixeiro viajante. A diferença para a solução atual é que antes era guardado o valor dos nós visitados, em vez do seu símbolo. Esta solução apresentada tinha dois problemas: não resolvia o problema na sua totalidade uma vez que falhava e não resolvia o problema para a tarefa 2 onde as distâncias entre cidades seriam sempre diferentes. Como tal passou-se a guardar o símbolo que representa o nó e passou-se a ter uma solução generalizada para as duas tarefas.
+
+5 - Casos de teste utilizados
+	Como forma de verificar os algoritmos anteriores foram criados 3 mapas diferentes para cada tarefa, num total de 6 diferentes mapas. O primeiro possui 4 cidades, o segundo 7 e finalmente o terceiro tem 10 cidades. Estes mapas foram verificados manualmente para verificar se as distâncias entre cidades respeitavam as regras impostas mediante a respetiva tarefa.
+	Posteriormente foi também verificado o caminho mais curto de cada um destes mapas. Todos este três mapas passaram no teste.
+	--MAPAS--
+	No que diz respeito á tarefa 3 segue em anexo os mapas que respeitaram a condição imposta no enunciado do projeto.
+	--RESULTADOS--
+
+6 - Conclusões finais
+
+Olhando para as estruturas e algoritmos implementados é fácil perceber que a tarefa 2 apresenta melhores resultados, o que se traduz num maior número de cidades, uma vez que o algoritmo de criação do grafo não tem de ir á lista criada até ao momento procurar se existe uma ligação correspondente. Em vez disso todos os valores são criados aleatóriamente. Relativamente ás estruturas usadas todas elas apresentam complexidades temporais/espaciais relativamente aceitáveis, exceto no algoritmo de criação do grafo para a tarefa 1 onde são usados dois ciclos for e para procurar por uma ligação existente recorreu-se á função get que possui uma complexidade temporal O(n). Pessoalmente penso que existe uma solução mais simples para este algoritmo no sentido da redução da complexidade temporal. Relativamente ao algoritmo escolhido para resolver o problema é debatível se o nearest neighbour algorithm é a melhor solução para o problema. O algoritmo cumpre o que é pedido para um número de cidades pequeno mas para um número de cidades maior o algoritmo pode falhar. Poderia e deveria ter recorrido a outros algoritmos, como o algoritmo de Christofides, e verificar o seu tempo de resolução.
+
+
+
+
+
+
+
+

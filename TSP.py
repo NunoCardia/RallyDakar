@@ -4,6 +4,7 @@ from time import process_time
 
 class TSP():
 
+
     def create_adjancency_maxtrix(self,map):
         map_length = len(map)
         adjacency_matrix = [y for y in range(map_length)]
