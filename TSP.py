@@ -1,7 +1,3 @@
-import Rally
-import Tarefa2
-from time import process_time
-
 class TSP():
 
 
@@ -14,6 +10,7 @@ class TSP():
             adjacency_matrix[i] = val
 
         return adjacency_matrix
+
 
 
     def solve_tsp(self,matrix,map):
@@ -39,27 +36,3 @@ class TSP():
         for elem in path:
             print(elem,end=' ')
         print("\nTotal cost: " + str(cost))
-
-
-def main():
-    t = TSP()
-    # s = Rally.Tarefa1().read_symbols()
-    # print(len(s))
-    inicio = process_time()
-    # a = Rally.Tarefa1().geradorMapas(10,s)
-    # Rally.Tarefa1().print_map(a)
-    #m = t.create_adjancency_maxtrix(a)
-    s = Tarefa2.Tarefa2().read_symbols()
-    a = Tarefa2.Tarefa2().geradorMapas(10, s)
-    Tarefa2.Tarefa2().print_map(a)
-    m = t.create_adjancency_maxtrix(a)
-    t.solve_tsp(m,a)
-    fim = process_time()
-    print("Operação concluida em " + str(fim - inicio) + " segundos")
-
-
-
-    #t.solve_tsp(m)
-
-if __name__ == "__main__":
-    main()
